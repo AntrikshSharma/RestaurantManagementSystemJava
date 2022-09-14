@@ -1,2 +1,5 @@
 /RestaurantManagementSystem/target/
 /RestaurantManageSystem/target/
+
+# IntelliJ Folder ignored
+.idea/
