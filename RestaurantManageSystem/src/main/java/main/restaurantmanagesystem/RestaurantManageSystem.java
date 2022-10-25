@@ -1,7 +1,7 @@
 package main.restaurantmanagesystem;
 import LoadingScreen.SplashScreen;
 
-import LoginScreen.LoginPage;
+import LoginScreen.LoginMain;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +17,7 @@ public class RestaurantManageSystem {
         
         // ADD THE RESOURCE LOADING CODE HERE
         
-        for ( int i=0; i<10; ++i)
+        for ( int i=0; i<5; ++i)
         {
             try {
                 Thread.sleep(1000);
@@ -27,7 +27,7 @@ public class RestaurantManageSystem {
             
         }
         LS.dispose();
-        LoginPage LP = new LoginPage();
+        LoginMain LP = new LoginMain();
         LP.setVisible(true);
         
         

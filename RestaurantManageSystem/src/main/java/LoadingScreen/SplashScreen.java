@@ -30,7 +30,7 @@ public class SplashScreen extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("F:\\SIT\\5. SEM 5\\JAVA\\PROJECT\\RestaurantManageSystem\\src\\main\\java\\LoadingScreen\\loading.gif")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon("./loading.gif")); // NOI18N
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
