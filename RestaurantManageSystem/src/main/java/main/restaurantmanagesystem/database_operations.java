@@ -280,7 +280,7 @@ public class database_operations {
 
     void insert_employee(int id, String name, String mobile, String email, String address, String date)
     {
-
+        Date d = Date.valueOf(date);
         Connection c = newConnection(true);
         try {
             String query = "INSERT INTO EMPLOYEE VALUES (?, ?, ?, ?, ?, ?);";
@@ -290,7 +290,7 @@ public class database_operations {
             prep.setString(3, mobile);
             prep.setString(4, email);
             prep.setString(5, address);
-            prep.setString(6, date);
+            prep.setDate(6, d);
             prep.executeUpdate();
             System.out.println("Value Inserted.");
             c.close();
@@ -300,6 +300,7 @@ public class database_operations {
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+
     }
 
     void insert_waiter(int id, int salary, int emp_id)
@@ -345,7 +346,7 @@ public class database_operations {
 
     void insert_customer(int id, String name, String mobile, String email,String address, String date)
     {
-
+        Date d = Date.valueOf(date);
         Connection c = newConnection(true);
         try {
             String query = "INSERT INTO CUSTOMER VALUES (?, ?, ?, ?, ?, ?);";
@@ -355,7 +356,7 @@ public class database_operations {
             prep.setString(3, mobile);
             prep.setString(4, email);
             prep.setString(5, address);
-            prep.setString(6, date);
+            prep.setDate(6, d);
             prep.executeUpdate();
             System.out.println("Value Inserted.");
             c.close();
@@ -630,6 +631,7 @@ public class database_operations {
         db.cluster();
         db.insert_employee(1, "Anupam", "9842568104", "anupam@gmail.com",
                 "Example Address, Test Road, Test City - 411038", "2022-09-16");
+        db.remove_employee(1);
         db.delete_tables();
         db.delete_database();
     }
