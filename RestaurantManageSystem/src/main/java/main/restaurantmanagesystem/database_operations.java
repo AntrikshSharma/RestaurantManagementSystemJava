@@ -8,16 +8,16 @@ Database Operations
 => cluster_tables() - Clusters tables.
 
 Insert Functions
+=> ** All return 1 if value is inserted, 0 if value already present. **
 => insert_employee(int id, String name, String mobile, String email, String address, String date)
 => insert_waiter(int id, int salary, int emp_id)
 => insert_admin(int id, int emp_id)
 => insert_customer(int id, String name, String mobile, String email,String address, String date)
 => insert_item(int id, String name, int price, String type)
 => insert_order(int id, int total, String status, int writer_id, int customer_id)
-=> ** All return 1 if value is inserted, 0 if value already present. **
-
 
 Remove Functions
+=> ** All return 1 if value is deleted, 0 if value not present. **
 => remove_employee(int id) & remove_employee(String name)
 => remove_waiter(int id)
 => remove_admin(int id)
@@ -25,7 +25,6 @@ Remove Functions
 => remove_item(int id) & remove_item(String name)
 => remove_order(int id)
 => remove_orderitem(int order_id)
-=> ** All return 1 if value is deleted, 0 if value not present. **
 
  */
 
