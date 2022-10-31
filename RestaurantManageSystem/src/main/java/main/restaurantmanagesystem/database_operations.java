@@ -3,11 +3,41 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.*;
 
+/*
+Database Operations
+=> newConnection(boolean with_dbname) - Returns connection to database. If with_dbname is true, returns connection to database.
+=> databaseExists() - Checks if database exists. Returns true/false.
+=> create_database(String name) - Creates database with name in argument.
+=> create_tables() - Creates all the required tables.
+=> delete_tables() - Deletes all the tables.
+=> cluster_tables() - Clusters tables.
+
+Insert Functions
+=> insert_employee(int id, String name, String mobile, String email, String address, String date)
+=> insert_waiter(int id, int salary, int emp_id)
+=> insert_admin(int id, int emp_id)
+=> insert_customer(int id, String name, String mobile, String email,String address, String date)
+=> insert_item(int id, String name, int price, String type)
+=> insert_order(int id, int total, String status, int writer_id, int customer_id)
+
+Remove Functions
+=> remove_employee(int id) & remove_employee(String name)
+=> remove_waiter(int id)
+=> remove_admin(int id)
+=> remove_customer(int id) & remove_customer(String name)
+=> remove_item(int id) & remove_item(String name)
+=> remove_order(int id)
+=> remove_orderitem(int order_id)
+
+ */
+
 public class database_operations {
     String dbname;
+    String[] table_names;
     database_operations()
     {
         dbname = "";
+        table_names = new String[]{"employee", "waiter", "admin", "customer", "\"order\"", "order_item"};
     }
     Connection newConnection(boolean with_dbname)
     {
@@ -248,11 +278,358 @@ public class database_operations {
         }
     }
 
+    void insert_employee(int id, String name, String mobile, String email, String address, String date)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            String query = "INSERT INTO EMPLOYEE VALUES (?, ?, ?, ?, ?, ?);";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.setString(2, name);
+            prep.setString(3, mobile);
+            prep.setString(4, email);
+            prep.setString(5, address);
+            prep.setString(6, date);
+            prep.executeUpdate();
+            System.out.println("Value Inserted.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void insert_waiter(int id, int salary, int emp_id)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            String query = "INSERT INTO WAITER VALUES (?, ?, ?);";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.setInt(2, salary);
+            prep.setInt(3, emp_id);
+            prep.executeUpdate();
+            System.out.println("Value Inserted.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void insert_admin(int id, int emp_id)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            String query = "INSERT INTO ADMIN VALUES (?, ?);";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.setInt(2, emp_id);
+            prep.executeUpdate();
+            System.out.println("Value Inserted.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void insert_customer(int id, String name, String mobile, String email,String address, String date)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            String query = "INSERT INTO CUSTOMER VALUES (?, ?, ?, ?, ?, ?);";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.setString(2, name);
+            prep.setString(3, mobile);
+            prep.setString(4, email);
+            prep.setString(5, address);
+            prep.setString(6, date);
+            prep.executeUpdate();
+            System.out.println("Value Inserted.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void insert_item(int id, String name, int price, String type)
+    {
+        Connection c = newConnection(true);
+        try {
+            String query = "INSERT INTO ITEM VALUES (?, ?, ?, ?);";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.setString(2, name);
+            prep.setInt(3, price);
+            prep.setString(3, type);
+            prep.executeUpdate();
+            System.out.println("Value Inserted.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void insert_order(int id, int total, String status, int writer_id, int customer_id)
+    {
+        Connection c = newConnection(true);
+        try {
+            String query = "INSERT INTO ORDER VALUES (?, ?, ?, ?, ?);";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.setInt(2, total);
+            prep.setString(3, status);
+            prep.setInt(4, writer_id);
+            prep.setInt(5, customer_id);
+            prep.executeUpdate();
+            System.out.println("Value Inserted.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void insert_orderitem(int order_id, int item_id, int quantity)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            String query = "INSERT INTO ORDER_ITEM VALUES (?, ?, ?);";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setInt(1, order_id);
+            prep.setInt(2, item_id);
+            prep.setInt(3, quantity);
+            prep.executeUpdate();
+            System.out.println("Value Inserted.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void remove_employee(int id)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            String query = "DELETE FROM EMPLOYEE WHERE ID = ?;";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.executeUpdate();
+            System.out.println("Value REMOVED.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void remove_employee(String name)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            String query = "DELETE FROM EMPLOYEE WHERE NAME = ?;";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setString(1, name);
+            prep.executeUpdate();
+            System.out.println("Value REMOVED.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void remove_waiter(int id)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            String query = "DELETE FROM WAITER WHERE ID = ?;";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.executeUpdate();
+            System.out.println("Value REMOVED.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void remove_admin(int id)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            String query = "DELETE FROM ADMIN WHERE ID = ?;";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.executeUpdate();
+            System.out.println("Value REMOVED.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void remove_customer(int id)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            String query = "DELETE FROM CUSTOMER WHERE ID = ?;";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.executeUpdate();
+            System.out.println("Value REMOVED.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void remove_customer(String name)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            String query = "DELETE FROM CUSTOMER WHERE NAME = ?;";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setString(1, name);
+            prep.executeUpdate();
+            System.out.println("Value REMOVED.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void remove_item(int id)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            String query = "DELETE FROM ITEM WHERE ID = ?;";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.executeUpdate();
+            System.out.println("Value REMOVED.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void remove_item(String name)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            String query = "DELETE FROM ITEM WHERE NAME = ?;";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setString(1, name);
+            prep.executeUpdate();
+            System.out.println("Value REMOVED.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void remove_order(int id)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            String query = "DELETE FROM ORDER WHERE ID = ?;";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.executeUpdate();
+            System.out.println("Value REMOVED.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    void remove_orderitem(int order_id)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            String query = "DELETE FROM ORDER_ITEM WHERE ID = ?;";
+            PreparedStatement prep = c.prepareStatement(query);
+            prep.setInt(1, order_id);
+            prep.executeUpdate();
+            System.out.println("Value REMOVED.");
+            c.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+    }
+
+
+
     public static void main(String[] args) {
         database_operations db = new database_operations();
         db.create_database("db");
         db.create_tables();
         db.cluster();
+        db.insert_employee(1, "Anupam", "9842568104", "anupam@gmail.com",
+                "Example Address, Test Road, Test City - 411038", "2022-09-16");
         db.delete_tables();
         db.delete_database();
     }
