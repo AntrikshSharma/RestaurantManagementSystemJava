@@ -1,4 +1,8 @@
 /*
+
+*** Uncomment and run main for testing ***
+*** Set your postgresql URL, username, password in newConnection(boolean with_dbname) ***
+
 Database Operations
 => newConnection(boolean with_dbname) - Returns connection to database. If with_dbname is true, returns connection to database.
 => databaseExists() - Checks if database exists. Returns true/false.
@@ -745,7 +749,7 @@ public class database_operations {
 
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         int x;
         database_operations db = new database_operations();
         db.create_database("db");
@@ -760,5 +764,5 @@ public class database_operations {
         db.remove_employee(1);
         db.delete_tables();
         db.delete_database();
-    }
+    }*/
 }
