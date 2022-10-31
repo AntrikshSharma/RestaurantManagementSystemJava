@@ -1,8 +1,3 @@
-package main.restaurantmanagesystem;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.*;
-
 /*
 Database Operations
 => newConnection(boolean with_dbname) - Returns connection to database. If with_dbname is true, returns connection to database.
@@ -19,6 +14,8 @@ Insert Functions
 => insert_customer(int id, String name, String mobile, String email,String address, String date)
 => insert_item(int id, String name, int price, String type)
 => insert_order(int id, int total, String status, int writer_id, int customer_id)
+=> ** All return 1 if value is inserted, 0 if value already present. **
+
 
 Remove Functions
 => remove_employee(int id) & remove_employee(String name)
@@ -28,8 +25,15 @@ Remove Functions
 => remove_item(int id) & remove_item(String name)
 => remove_order(int id)
 => remove_orderitem(int order_id)
+=> ** All return 1 if value is deleted, 0 if value not present. **
 
  */
+
+
+package main.restaurantmanagesystem;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.*;
 
 public class database_operations {
     String dbname;
@@ -278,13 +282,18 @@ public class database_operations {
         }
     }
 
-    void insert_employee(int id, String name, String mobile, String email, String address, String date)
+    int insert_employee(int id, String name, String mobile, String email, String address, String date)
     {
         Date d = Date.valueOf(date);
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from employee where id=?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(rs.next())
+                return 0;
             String query = "INSERT INTO EMPLOYEE VALUES (?, ?, ?, ?, ?, ?);";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setInt(1, id);
             prep.setString(2, name);
             prep.setString(3, mobile);
@@ -294,63 +303,83 @@ public class database_operations {
             prep.executeUpdate();
             System.out.println("Value Inserted.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
-
+        return 0;
     }
 
-    void insert_waiter(int id, int salary, int emp_id)
+    int insert_waiter(int id, int salary, int emp_id)
     {
 
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from waiter where id=?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(rs.next())
+                return 0;
             String query = "INSERT INTO WAITER VALUES (?, ?, ?);";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setInt(1, id);
             prep.setInt(2, salary);
             prep.setInt(3, emp_id);
             prep.executeUpdate();
             System.out.println("Value Inserted.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
-    void insert_admin(int id, int emp_id)
+    int insert_admin(int id, int emp_id)
     {
 
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from admin where id=?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(rs.next())
+                return 0;
             String query = "INSERT INTO ADMIN VALUES (?, ?);";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setInt(1, id);
             prep.setInt(2, emp_id);
             prep.executeUpdate();
             System.out.println("Value Inserted.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
-    void insert_customer(int id, String name, String mobile, String email,String address, String date)
+    int insert_customer(int id, String name, String mobile, String email,String address, String date)
     {
         Date d = Date.valueOf(date);
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from customer where id=?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(rs.next())
+                return 0;
             String query = "INSERT INTO CUSTOMER VALUES (?, ?, ?, ?, ?, ?);";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setInt(1, id);
             prep.setString(2, name);
             prep.setString(3, mobile);
@@ -360,20 +389,27 @@ public class database_operations {
             prep.executeUpdate();
             System.out.println("Value Inserted.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
-    void insert_item(int id, String name, int price, String type)
+    int insert_item(int id, String name, int price, String type)
     {
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from item where id=?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(rs.next())
+                return 0;
             String query = "INSERT INTO ITEM VALUES (?, ?, ?, ?);";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setInt(1, id);
             prep.setString(2, name);
             prep.setInt(3, price);
@@ -381,20 +417,27 @@ public class database_operations {
             prep.executeUpdate();
             System.out.println("Value Inserted.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
-    void insert_order(int id, int total, String status, int writer_id, int customer_id)
+    int insert_order(int id, int total, String status, int writer_id, int customer_id)
     {
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from order where id=?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(rs.next())
+                return 0;
             String query = "INSERT INTO ORDER VALUES (?, ?, ?, ?, ?);";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setInt(1, id);
             prep.setInt(2, total);
             prep.setString(3, status);
@@ -403,234 +446,318 @@ public class database_operations {
             prep.executeUpdate();
             System.out.println("Value Inserted.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
-    void insert_orderitem(int order_id, int item_id, int quantity)
+    int insert_orderitem(int order_id, int item_id, int quantity)
     {
 
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from order where order_id=?");
+            prep.setInt(1, order_id);
+            ResultSet rs= prep.executeQuery();
+            if(rs.next())
+                return 0;
             String query = "INSERT INTO ORDER_ITEM VALUES (?, ?, ?);";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setInt(1, order_id);
             prep.setInt(2, item_id);
             prep.setInt(3, quantity);
             prep.executeUpdate();
             System.out.println("Value Inserted.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
-    void remove_employee(int id)
+    int remove_employee(int id)
     {
 
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from employee where id=?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(!rs.next())
+                return 0;
             String query = "DELETE FROM EMPLOYEE WHERE ID = ?;";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setInt(1, id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
-    void remove_employee(String name)
+    int remove_employee(String name)
     {
 
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from employee where name=?");
+            prep.setString(1, name);
+            ResultSet rs= prep.executeQuery();
+            if(!rs.next())
+                return 0;
             String query = "DELETE FROM EMPLOYEE WHERE NAME = ?;";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setString(1, name);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
-    void remove_waiter(int id)
+    int remove_waiter(int id)
     {
 
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from waiter where id=?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(!rs.next())
+                return 0;
             String query = "DELETE FROM WAITER WHERE ID = ?;";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setInt(1, id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
-    void remove_admin(int id)
+    int remove_admin(int id)
     {
 
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from admin where id=?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(!rs.next())
+                return 0;
             String query = "DELETE FROM ADMIN WHERE ID = ?;";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setInt(1, id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
-    void remove_customer(int id)
+    int remove_customer(int id)
     {
 
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from customer where id=?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(!rs.next())
+                return 0;
             String query = "DELETE FROM CUSTOMER WHERE ID = ?;";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setInt(1, id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
-    void remove_customer(String name)
+    int remove_customer(String name)
     {
 
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from customer where name=?");
+            prep.setString(1, name);
+            ResultSet rs= prep.executeQuery();
+            if(!rs.next())
+                return 0;
             String query = "DELETE FROM CUSTOMER WHERE NAME = ?;";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setString(1, name);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
-    void remove_item(int id)
+    int remove_item(int id)
     {
 
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from item where id=?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(!rs.next())
+                return 0;
             String query = "DELETE FROM ITEM WHERE ID = ?;";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setInt(1, id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
-    void remove_item(String name)
+    int remove_item(String name)
     {
 
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from item where name=?");
+            prep.setString(1, name);
+            ResultSet rs= prep.executeQuery();
+            if(!rs.next())
+                return 0;
             String query = "DELETE FROM ITEM WHERE NAME = ?;";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setString(1, name);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
-    void remove_order(int id)
+    int remove_order(int id)
     {
 
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from order where id=?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(!rs.next())
+                return 0;
             String query = "DELETE FROM ORDER WHERE ID = ?;";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setInt(1, id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
-    void remove_orderitem(int order_id)
+    int remove_orderitem(int order_id)
     {
 
         Connection c = newConnection(true);
         try {
+            PreparedStatement prep = c.prepareStatement("select * from order_item where order_id=?");
+            prep.setInt(1, order_id);
+            ResultSet rs= prep.executeQuery();
+            if(!rs.next())
+                return 0;
             String query = "DELETE FROM ORDER_ITEM WHERE ID = ?;";
-            PreparedStatement prep = c.prepareStatement(query);
+            prep = c.prepareStatement(query);
             prep.setInt(1, order_id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
             c.close();
+            return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
         }
+        return 0;
     }
 
 
 
     public static void main(String[] args) {
+        int x;
         database_operations db = new database_operations();
         db.create_database("db");
         db.create_tables();
         db.cluster();
-        db.insert_employee(1, "Anupam", "9842568104", "anupam@gmail.com",
+        x = db.insert_employee(1, "Anupam", "9842568104", "anupam@gmail.com",
                 "Example Address, Test Road, Test City - 411038", "2022-09-16");
+        System.out.println(x);
+        x = db.insert_employee(1, "Anupam", "9842568104", "anupam@gmail.com",
+                "Example Address, Test Road, Test City - 411038", "2022-09-16");
+        System.out.println(x);
         db.remove_employee(1);
         db.delete_tables();
         db.delete_database();
