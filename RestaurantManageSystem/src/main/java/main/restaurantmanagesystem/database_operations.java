@@ -25,6 +25,7 @@ Remove Functions
 => remove_customer(int id) & remove_customer(String name)
 => remove_item(int id) & remove_item(String name)
 => remove_order(int id)
+=> remove_orderitem(int order_id)
 => remove_orderitem(int order_id, int item_id)
 
 Select Functions
@@ -319,7 +320,7 @@ public class database_operations {
         Date d = Date.valueOf(date);
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from employee where id=?");
+            PreparedStatement prep = c.prepareStatement("select * from employee where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(rs.next())
@@ -350,7 +351,7 @@ public class database_operations {
 
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from waiter where id=?");
+            PreparedStatement prep = c.prepareStatement("select * from waiter where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(rs.next())
@@ -378,7 +379,7 @@ public class database_operations {
 
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from admin where id=?");
+            PreparedStatement prep = c.prepareStatement("select * from admin where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(rs.next())
@@ -405,7 +406,7 @@ public class database_operations {
         Date d = Date.valueOf(joining_date);
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from customer where id=?");
+            PreparedStatement prep = c.prepareStatement("select * from customer where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(rs.next())
@@ -435,7 +436,7 @@ public class database_operations {
     {
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from item where id=?");
+            PreparedStatement prep = c.prepareStatement("select * from item where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(rs.next())
@@ -463,7 +464,7 @@ public class database_operations {
     {
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from order where id=?");
+            PreparedStatement prep = c.prepareStatement("select * from order where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(rs.next())
@@ -493,7 +494,7 @@ public class database_operations {
 
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from order where order_id=?");
+            PreparedStatement prep = c.prepareStatement("select * from order where order_id=?;");
             prep.setInt(1, order_id);
             ResultSet rs= prep.executeQuery();
             if(rs.next())
@@ -521,7 +522,7 @@ public class database_operations {
 
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from employee where id=?");
+            PreparedStatement prep = c.prepareStatement("select * from employee where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(!rs.next())
@@ -547,7 +548,7 @@ public class database_operations {
 
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from employee where name=?");
+            PreparedStatement prep = c.prepareStatement("select * from employee where name=?;");
             prep.setString(1, name);
             ResultSet rs= prep.executeQuery();
             if(!rs.next())
@@ -573,7 +574,7 @@ public class database_operations {
 
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from waiter where id=?");
+            PreparedStatement prep = c.prepareStatement("select * from waiter where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(!rs.next())
@@ -599,7 +600,7 @@ public class database_operations {
 
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from admin where id=?");
+            PreparedStatement prep = c.prepareStatement("select * from admin where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(!rs.next())
@@ -625,7 +626,7 @@ public class database_operations {
 
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from customer where id=?");
+            PreparedStatement prep = c.prepareStatement("select * from customer where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(!rs.next())
@@ -651,7 +652,7 @@ public class database_operations {
 
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from customer where name=?");
+            PreparedStatement prep = c.prepareStatement("select * from customer where name=?;");
             prep.setString(1, name);
             ResultSet rs= prep.executeQuery();
             if(!rs.next())
@@ -677,7 +678,7 @@ public class database_operations {
 
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from item where id=?");
+            PreparedStatement prep = c.prepareStatement("select * from item where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(!rs.next())
@@ -703,7 +704,7 @@ public class database_operations {
 
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from item where name=?");
+            PreparedStatement prep = c.prepareStatement("select * from item where name=?;");
             prep.setString(1, name);
             ResultSet rs= prep.executeQuery();
             if(!rs.next())
@@ -729,7 +730,7 @@ public class database_operations {
 
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from order where id=?");
+            PreparedStatement prep = c.prepareStatement("select * from order where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(!rs.next())
@@ -737,6 +738,31 @@ public class database_operations {
             String query = "DELETE FROM ORDER WHERE ID = ?;";
             prep = c.prepareStatement(query);
             prep.setInt(1, id);
+            prep.executeUpdate();
+            System.out.println("Value REMOVED.");
+            c.close();
+            return 1;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return 0;
+    }
+    int remove_orderitem(int order_id)
+    {
+
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from order_item where order_id=?;");
+            prep.setInt(1, order_id);
+            ResultSet rs= prep.executeQuery();
+            if(!rs.next())
+                return 0;
+            String query = "DELETE FROM ORDER_ITEM WHERE order_id = ? and item_id = ?;";
+            prep = c.prepareStatement(query);
+            prep.setInt(1, order_id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
             c.close();
@@ -796,7 +822,7 @@ public class database_operations {
         employee[] arr = new employee[]{new employee()};
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from employee");
+            PreparedStatement prep = c.prepareStatement("select * from employee;");
             ResultSet rs= prep.executeQuery();
             ResultSet temp = rs;
             int l = 0, i = 0;
@@ -830,7 +856,7 @@ public class database_operations {
         int i = 0;
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from employee where id = ?");
+            PreparedStatement prep = c.prepareStatement("select * from employee where id = ?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(rs.next())
@@ -868,7 +894,7 @@ public class database_operations {
         waiter[] arr = new waiter[]{new waiter()};
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from waiter");
+            PreparedStatement prep = c.prepareStatement("select * from waiter;");
             ResultSet rs= prep.executeQuery();
             ResultSet temp = rs;
             int l = 0, i = 0;
@@ -899,7 +925,7 @@ public class database_operations {
         int i = 0;
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from waiter where id = ?");
+            PreparedStatement prep = c.prepareStatement("select * from waiter where id = ?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(rs.next())
@@ -934,7 +960,7 @@ public class database_operations {
         admin[] arr = new admin[]{new admin()};
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from admin");
+            PreparedStatement prep = c.prepareStatement("select * from admin;");
             ResultSet rs= prep.executeQuery();
             ResultSet temp = rs;
             int l = 0, i = 0;
@@ -964,7 +990,7 @@ public class database_operations {
         int i = 0;
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from admin where id = ?");
+            PreparedStatement prep = c.prepareStatement("select * from admin where id = ?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(rs.next())
@@ -1003,7 +1029,7 @@ public class database_operations {
         customer[] arr = new customer[]{new customer()};
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from customer");
+            PreparedStatement prep = c.prepareStatement("select * from customer;");
             ResultSet rs= prep.executeQuery();
             ResultSet temp = rs;
             int l = 0, i = 0;
@@ -1037,7 +1063,7 @@ public class database_operations {
         int i = 0;
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from customer where id = ?");
+            PreparedStatement prep = c.prepareStatement("select * from customer where id = ?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(rs.next())
@@ -1077,7 +1103,7 @@ public class database_operations {
         item[] arr = new item[]{new item()};
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from item");
+            PreparedStatement prep = c.prepareStatement("select * from item;");
             ResultSet rs= prep.executeQuery();
             ResultSet temp = rs;
             int l = 0, i = 0;
@@ -1109,7 +1135,7 @@ public class database_operations {
         int i = 0;
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from item where id = ?");
+            PreparedStatement prep = c.prepareStatement("select * from item where id = ?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(rs.next())
@@ -1149,7 +1175,7 @@ public class database_operations {
         order[] arr = new order[]{new order()};
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from order");
+            PreparedStatement prep = c.prepareStatement("select * from order;");
             ResultSet rs= prep.executeQuery();
             ResultSet temp = rs;
             int l = 0, i = 0;
@@ -1182,7 +1208,7 @@ public class database_operations {
         int i = 0;
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from order where id = ?");
+            PreparedStatement prep = c.prepareStatement("select * from order where id = ?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
             if(rs.next())
@@ -1219,7 +1245,7 @@ public class database_operations {
         orderitem[] arr = new orderitem[]{new orderitem()};
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from order_item");
+            PreparedStatement prep = c.prepareStatement("select * from order_item;");
             ResultSet rs= prep.executeQuery();
             ResultSet temp = rs;
             int l = 0, i = 0;
@@ -1249,7 +1275,7 @@ public class database_operations {
         orderitem[] arr = new orderitem[]{new orderitem()};
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from order_item where order_id = ?");
+            PreparedStatement prep = c.prepareStatement("select * from order_item where order_id = ?;");
             prep.setInt(1, order_id);
             ResultSet rs= prep.executeQuery();
             ResultSet temp = rs;
@@ -1281,7 +1307,7 @@ public class database_operations {
         int i = 0;
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from order_item where order_id = ? and item_id = ?");
+            PreparedStatement prep = c.prepareStatement("select * from order_item where order_id = ? and item_id = ?;");
             prep.setInt(1, order_id);
             prep.setInt(1, item_id);
             ResultSet rs= prep.executeQuery();
