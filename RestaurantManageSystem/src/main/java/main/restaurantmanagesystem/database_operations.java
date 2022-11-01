@@ -12,7 +12,7 @@ Insert Functions
 => insert_employee(int id, String name, String mobile, String email, String address, String date)
 => insert_waiter(int id, int salary, int emp_id)
 => insert_admin(int id, int emp_id)
-=> insert_customer(int id, String name, String mobile, String email,String address, String date)
+=> insert_customer(int id, String name, String mobile, String email,String address, String joining_date)
 => insert_item(int id, String name, int price, String type)
 => insert_order(int id, int total, String status, int writer_id, int customer_id)
 => insert_orderitem(int order_id, int item_id, int quantity)
@@ -41,7 +41,7 @@ Select Functions
 => admin[] getAdmin() = returns array of all admins of admin class object.
 => admin getAdmin(int id) = returns object of admin with 'id'.
 =>
-=> public class customer { int id, String name, String mobile, String email,String address, String date }
+=> public class customer { int id, String name, String mobile, String email,String address, String joining_date }
 => customer[] getCustomer() = returns array of all customers of customer class object.
 => customer getCustomer(int id) = returns object of customer with 'id'.
 =>
@@ -400,9 +400,9 @@ public class database_operations {
         return 0;
     }
 
-    int insert_customer(int id, String name, String mobile, String email,String address, String date)
+    int insert_customer(int id, String name, String mobile, String email,String address, String joining_date)
     {
-        Date d = Date.valueOf(date);
+        Date d = Date.valueOf(joining_date);
         Connection c = newConnection(true);
         try {
             PreparedStatement prep = c.prepareStatement("select * from customer where id=?");
@@ -987,7 +987,7 @@ public class database_operations {
     public class customer
     {
         int id;
-        String name, mobile, email, address, date;
+        String name, mobile, email, address, joining_date;
         customer()
         {
             id = -1;
@@ -995,7 +995,7 @@ public class database_operations {
             mobile = "";
             email = "";
             address = "";
-            date = "";
+            joining_date = "";
         }
     }
     customer[] getCustomer()
@@ -1018,7 +1018,7 @@ public class database_operations {
                 a.mobile = rs.getString(3);
                 a.email = rs.getString(4);
                 a.address = rs.getString(5);
-                a.date = rs.getString(6);
+                a.joining_date = rs.getString(6);
                 arr[i++] = a;
             }
             c.close();
@@ -1047,7 +1047,7 @@ public class database_operations {
                 a.mobile = rs.getString(3);
                 a.email = rs.getString(4);
                 a.address = rs.getString(5);
-                a.date = rs.getString(6);
+                a.joining_date = rs.getString(6);
             }
             c.close();
             return a;
@@ -1134,7 +1134,7 @@ public class database_operations {
     public class order
     {
         int id, total, writer_id, customer_id;
-        String status, type;
+        String status;
         order()
         {
             id = -1;
@@ -1142,7 +1142,6 @@ public class database_operations {
             writer_id = -1;
             customer_id = -1;
             status = "";
-            type = "";
         }
     }
     order[] getOrder()
