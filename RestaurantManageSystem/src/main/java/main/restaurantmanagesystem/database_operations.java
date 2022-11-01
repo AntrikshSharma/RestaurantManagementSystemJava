@@ -1,8 +1,4 @@
 /*
-
-*** Uncomment and run main for testing ***
-*** Set your postgresql URL, username, password in newConnection(boolean with_dbname) ***
-
 Database Operations
 => newConnection(boolean with_dbname) - Returns connection to database. If with_dbname is true, returns connection to database.
 => databaseExists() - Checks if database exists. Returns true/false.
@@ -19,6 +15,7 @@ Insert Functions
 => insert_customer(int id, String name, String mobile, String email,String address, String date)
 => insert_item(int id, String name, int price, String type)
 => insert_order(int id, int total, String status, int writer_id, int customer_id)
+=> insert_orderitem(int order_id, int item_id, int quantity)
 
 Remove Functions
 => ** All return 1 if value is deleted, 0 if value not present. **
@@ -28,7 +25,39 @@ Remove Functions
 => remove_customer(int id) & remove_customer(String name)
 => remove_item(int id) & remove_item(String name)
 => remove_order(int id)
-=> remove_orderitem(int order_id)
+=> remove_orderitem(int order_id, int item_id)
+
+Select Functions
+=>
+=> public class employee { int id, String name, String mobile, String email, String address, String date }
+=> employee[] getEmployee() = returns array of all employees of employee class object.
+=> employee getEmployee(int id) = returns object of employee with 'id'.
+=>
+=> public class waiter { int id, int salary, int emp_id }
+=> waiter[] getWaiter() = returns array of all waiters of waiter class object.
+=> waiter getWaiter(int id) = returns object of waiter with 'id'.
+=>
+=> public class admin { int id, int emp_id }
+=> admin[] getAdmin() = returns array of all admins of admin class object.
+=> admin getAdmin(int id) = returns object of admin with 'id'.
+=>
+=> public class customer { int id, String name, String mobile, String email,String address, String date }
+=> customer[] getCustomer() = returns array of all customers of customer class object.
+=> customer getCustomer(int id) = returns object of customer with 'id'.
+=>
+=> public class item { int id, String name, int price, String type }
+=> item[] getItem() = returns array of all items of item class object.
+=> item getItem(int id) = returns object of item with 'id'.
+=>
+=> public class order { int id, int total, String status, int writer_id, int customer_id }
+=> order[] getOrder() = returns array of all orders of order class object.
+=> order getOrder(int id) = returns object of order with 'id'.
+=>
+=> public class orderitem { int order_id, int item_id, int quantity }
+=> orderitem[] getOrderItem() = returns array of all orderitems of orderitem class object.
+=> orderitem[] getOrderItem(int order_id) = returns array of all orderitems of orderitem class object of 'order_id'.
+=> orderitem getOrderItem(int order_id, item_id) = returns object of order with 'order_id' and 'item_id'.
+
 
  */
 
@@ -721,19 +750,21 @@ public class database_operations {
         return 0;
     }
 
-    int remove_orderitem(int order_id)
+    int remove_orderitem(int order_id, int item_id)
     {
 
         Connection c = newConnection(true);
         try {
-            PreparedStatement prep = c.prepareStatement("select * from order_item where order_id=?");
+            PreparedStatement prep = c.prepareStatement("select * from order_item where order_id=? and item_id = ?");
             prep.setInt(1, order_id);
+            prep.setInt(2, item_id);
             ResultSet rs= prep.executeQuery();
             if(!rs.next())
                 return 0;
-            String query = "DELETE FROM ORDER_ITEM WHERE ID = ?;";
+            String query = "DELETE FROM ORDER_ITEM WHERE order_id = ? and item_id = ?;";
             prep = c.prepareStatement(query);
             prep.setInt(1, order_id);
+            prep.setInt(2, item_id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
             c.close();
@@ -746,6 +777,533 @@ public class database_operations {
         }
         return 0;
     }
+    public class employee
+    {
+        int id;
+        String name, mobile, email, address, date;
+        employee()
+        {
+            id = -1;
+            name = "";
+            mobile = "";
+            email = "";
+            address = "";
+            date = "";
+        }
+    }
+    employee[] getEmployee()
+    {
+        employee[] arr = new employee[]{new employee()};
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from employee");
+            ResultSet rs= prep.executeQuery();
+            ResultSet temp = rs;
+            int l = 0, i = 0;
+            while(temp.next())
+                l++;
+            arr = new employee[l];
+            while(rs.next())
+            {
+                employee a = new employee();
+                a.id = rs.getInt(1);
+                a.name = rs.getString(2);
+                a.mobile = rs.getString(3);
+                a.email = rs.getString(4);
+                a.address = rs.getString(5);
+                a.date = rs.getString(6);
+                arr[i++] = a;
+            }
+            c.close();
+            return arr;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return arr;
+    }
+    employee getEmployee(int id)
+    {
+        employee a = new employee();
+        int i = 0;
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from employee where id = ?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(rs.next())
+            {
+                a.id = rs.getInt(1);
+                a.name = rs.getString(2);
+                a.mobile = rs.getString(3);
+                a.email = rs.getString(4);
+                a.address = rs.getString(5);
+                a.date = rs.getString(6);
+            }
+            c.close();
+            return a;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return a;
+    }
+
+    public class waiter
+    {
+        int id, salary, emp_id;
+        waiter()
+        {
+            id = -1;
+            salary = -1;
+            emp_id = -1;
+        }
+    }
+    waiter[] getWaiter()
+    {
+        waiter[] arr = new waiter[]{new waiter()};
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from waiter");
+            ResultSet rs= prep.executeQuery();
+            ResultSet temp = rs;
+            int l = 0, i = 0;
+            while(temp.next())
+                l++;
+            arr = new waiter[l];
+            while(rs.next())
+            {
+                waiter a = new waiter();
+                a.id = rs.getInt(1);
+                a.salary = rs.getInt(2);
+                a.emp_id = rs.getInt(3);
+                arr[i++] = a;
+            }
+            c.close();
+            return arr;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return arr;
+    }
+    waiter getWaiter(int id)
+    {
+        waiter a = new waiter();
+        int i = 0;
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from waiter where id = ?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(rs.next())
+            {
+                a.id = rs.getInt(1);
+                a.salary = rs.getInt(2);
+                a.emp_id = rs.getInt(3);
+            }
+            c.close();
+            return a;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return a;
+    }
+
+
+    public class admin
+    {
+        int id, emp_id;
+        admin()
+        {
+            id = -1;
+            emp_id = -1;
+        }
+    }
+    admin[] getAdmin()
+    {
+        admin[] arr = new admin[]{new admin()};
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from admin");
+            ResultSet rs= prep.executeQuery();
+            ResultSet temp = rs;
+            int l = 0, i = 0;
+            while(temp.next())
+                l++;
+            arr = new admin[l];
+            while(rs.next())
+            {
+                admin a = new admin();
+                a.id = rs.getInt(1);
+                a.emp_id = rs.getInt(2);
+                arr[i++] = a;
+            }
+            c.close();
+            return arr;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return arr;
+    }
+    admin getAdmin(int id)
+    {
+        admin a = new admin();
+        int i = 0;
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from admin where id = ?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(rs.next())
+            {
+
+                a.id = rs.getInt(1);
+                a.emp_id = rs.getInt(2);
+            }
+            c.close();
+            return a;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return a;
+    }
+
+    public class customer
+    {
+        int id;
+        String name, mobile, email, address, date;
+        customer()
+        {
+            id = -1;
+            name = "";
+            mobile = "";
+            email = "";
+            address = "";
+            date = "";
+        }
+    }
+    customer[] getCustomer()
+    {
+        customer[] arr = new customer[]{new customer()};
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from customer");
+            ResultSet rs= prep.executeQuery();
+            ResultSet temp = rs;
+            int l = 0, i = 0;
+            while(temp.next())
+                l++;
+            arr = new customer[l];
+            while(rs.next())
+            {
+                customer a = new customer();
+                a.id = rs.getInt(1);
+                a.name = rs.getString(2);
+                a.mobile = rs.getString(3);
+                a.email = rs.getString(4);
+                a.address = rs.getString(5);
+                a.date = rs.getString(6);
+                arr[i++] = a;
+            }
+            c.close();
+            return arr;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return arr;
+    }
+    customer getCustomer(int id)
+    {
+        customer a = new customer();
+        int i = 0;
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from customer where id = ?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(rs.next())
+            {
+                a.id = rs.getInt(1);
+                a.name = rs.getString(2);
+                a.mobile = rs.getString(3);
+                a.email = rs.getString(4);
+                a.address = rs.getString(5);
+                a.date = rs.getString(6);
+            }
+            c.close();
+            return a;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return a;
+    }
+
+    public class item
+    {
+        int id, price;
+        String name, type;
+        item()
+        {
+            id = -1;
+            name = "";
+            price = -1;
+            type = "";
+        }
+    }
+    item[] getItem()
+    {
+        item[] arr = new item[]{new item()};
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from item");
+            ResultSet rs= prep.executeQuery();
+            ResultSet temp = rs;
+            int l = 0, i = 0;
+            while(temp.next())
+                l++;
+            arr = new item[l];
+            while(rs.next())
+            {
+                item a = new item();
+                a.id = rs.getInt(1);
+                a.name = rs.getString(2);
+                a.price = rs.getInt(3);
+                a.type = rs.getString(4);
+                arr[i++] = a;
+            }
+            c.close();
+            return arr;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return arr;
+    }
+    item getItem(int id)
+    {
+        item a = new item();
+        int i = 0;
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from item where id = ?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(rs.next())
+            {
+                a.id = rs.getInt(1);
+                a.name = rs.getString(2);
+                a.price = rs.getInt(3);
+                a.type = rs.getString(4);
+            }
+            c.close();
+            return a;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return a;
+    }
+
+
+    public class order
+    {
+        int id, total, writer_id, customer_id;
+        String status, type;
+        order()
+        {
+            id = -1;
+            total = -1;
+            writer_id = -1;
+            customer_id = -1;
+            status = "";
+            type = "";
+        }
+    }
+    order[] getOrder()
+    {
+        order[] arr = new order[]{new order()};
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from order");
+            ResultSet rs= prep.executeQuery();
+            ResultSet temp = rs;
+            int l = 0, i = 0;
+            while(temp.next())
+                l++;
+            arr = new order[l];
+            while(rs.next())
+            {
+                order a = new order();
+                a.id = rs.getInt(1);
+                a.total = rs.getInt(2);
+                a.status = rs.getString(3);
+                a.writer_id = rs.getInt(4);
+                a.customer_id = rs.getInt(5);
+                arr[i++] = a;
+            }
+            c.close();
+            return arr;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return arr;
+    }
+    order getOrder(int id)
+    {
+        order a = new order();
+        int i = 0;
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from order where id = ?");
+            prep.setInt(1, id);
+            ResultSet rs= prep.executeQuery();
+            if(rs.next())
+            {
+                a.id = rs.getInt(1);
+                a.total = rs.getInt(2);
+                a.status = rs.getString(3);
+                a.writer_id = rs.getInt(4);
+                a.customer_id = rs.getInt(5);
+            }
+            c.close();
+            return a;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return a;
+    }
+
+    public class orderitem
+    {
+        int order_id, item_id, quantity;
+        orderitem()
+        {
+            order_id = -1;
+            item_id = -1;
+            quantity = -1;
+        }
+    }
+    orderitem[] getOrderItem()
+    {
+        orderitem[] arr = new orderitem[]{new orderitem()};
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from order_item");
+            ResultSet rs= prep.executeQuery();
+            ResultSet temp = rs;
+            int l = 0, i = 0;
+            while(temp.next())
+                l++;
+            arr = new orderitem[l];
+            while(rs.next())
+            {
+                orderitem a = new orderitem();
+                a.order_id = rs.getInt(1);
+                a.item_id = rs.getInt(2);
+                a.quantity = rs.getInt(3);
+                arr[i++] = a;
+            }
+            c.close();
+            return arr;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return arr;
+    }
+    orderitem[] getOrderItem(int order_id)
+    {
+        orderitem[] arr = new orderitem[]{new orderitem()};
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from order_item where order_id = ?");
+            prep.setInt(1, order_id);
+            ResultSet rs= prep.executeQuery();
+            ResultSet temp = rs;
+            int l = 0, i = 0;
+            while(temp.next())
+                l++;
+            arr = new orderitem[l];
+            while(rs.next())
+            {
+                orderitem a = new orderitem();
+                a.order_id = rs.getInt(1);
+                a.item_id = rs.getInt(2);
+                a.quantity = rs.getInt(3);
+                arr[i++] = a;
+            }
+            c.close();
+            return arr;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return arr;
+    }
+    orderitem getOrderItem(int order_id, int item_id)
+    {
+        orderitem a = new orderitem();
+        int i = 0;
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from order_item where order_id = ? and item_id = ?");
+            prep.setInt(1, order_id);
+            prep.setInt(1, item_id);
+            ResultSet rs= prep.executeQuery();
+            if(rs.next())
+            {
+                a.order_id = rs.getInt(1);
+                a.item_id = rs.getInt(2);
+                a.quantity = rs.getInt(3);
+            }
+            c.close();
+            return a;
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName()+": "+e.getMessage());
+            System.exit(0);
+        }
+        return a;
+    }
+
+
 
 
 
@@ -761,6 +1319,11 @@ public class database_operations {
         x = db.insert_employee(1, "Anupam", "9842568104", "anupam@gmail.com",
                 "Example Address, Test Road, Test City - 411038", "2022-09-16");
         System.out.println(x);
+        employee a[] = db.getEmployee();
+        employee b = db.getEmployee(1);
+        System.out.println(a);
+        System.out.println(b.id);
+        System.out.println(b.name);
         db.remove_employee(1);
         db.delete_tables();
         db.delete_database();
