@@ -323,8 +323,11 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from employee where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
-            if(rs.next())
+            if(rs.next()){
+                c.close();
                 return 0;
+            }
+                
             String query = "INSERT INTO EMPLOYEE VALUES (?, ?, ?, ?, ?, ?);";
             prep = c.prepareStatement(query);
             prep.setInt(1, id);
@@ -354,8 +357,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from waiter where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
-            if(rs.next())
+            if(rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "INSERT INTO WAITER VALUES (?, ?, ?);";
             prep = c.prepareStatement(query);
             prep.setInt(1, id);
@@ -382,8 +387,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from admin where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
-            if(rs.next())
+            if(rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "INSERT INTO ADMIN VALUES (?, ?);";
             prep = c.prepareStatement(query);
             prep.setInt(1, id);
@@ -409,8 +416,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from customer where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
-            if(rs.next())
+            if(rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "INSERT INTO CUSTOMER VALUES (?, ?, ?, ?, ?, ?);";
             prep = c.prepareStatement(query);
             prep.setInt(1, id);
@@ -439,8 +448,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from item where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
-            if(rs.next())
+            if(rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "INSERT INTO ITEM VALUES (?, ?, ?, ?);";
             prep = c.prepareStatement(query);
             prep.setInt(1, id);
@@ -467,8 +478,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from order where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
-            if(rs.next())
+            if(rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "INSERT INTO ORDER VALUES (?, ?, ?, ?, ?);";
             prep = c.prepareStatement(query);
             prep.setInt(1, id);
@@ -497,8 +510,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from order where order_id=?;");
             prep.setInt(1, order_id);
             ResultSet rs= prep.executeQuery();
-            if(rs.next())
+            if(rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "INSERT INTO ORDER_ITEM VALUES (?, ?, ?);";
             prep = c.prepareStatement(query);
             prep.setInt(1, order_id);
@@ -525,8 +540,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from employee where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
-            if(!rs.next())
+            if(!rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "DELETE FROM EMPLOYEE WHERE ID = ?;";
             prep = c.prepareStatement(query);
             prep.setInt(1, id);
@@ -551,8 +568,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from employee where name=?;");
             prep.setString(1, name);
             ResultSet rs= prep.executeQuery();
-            if(!rs.next())
+            if(!rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "DELETE FROM EMPLOYEE WHERE NAME = ?;";
             prep = c.prepareStatement(query);
             prep.setString(1, name);
@@ -577,8 +596,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from waiter where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
-            if(!rs.next())
+            if(!rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "DELETE FROM WAITER WHERE ID = ?;";
             prep = c.prepareStatement(query);
             prep.setInt(1, id);
@@ -603,8 +624,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from admin where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
-            if(!rs.next())
+            if(!rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "DELETE FROM ADMIN WHERE ID = ?;";
             prep = c.prepareStatement(query);
             prep.setInt(1, id);
@@ -629,8 +652,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from customer where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
-            if(!rs.next())
+            if(!rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "DELETE FROM CUSTOMER WHERE ID = ?;";
             prep = c.prepareStatement(query);
             prep.setInt(1, id);
@@ -655,8 +680,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from customer where name=?;");
             prep.setString(1, name);
             ResultSet rs= prep.executeQuery();
-            if(!rs.next())
+            if(!rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "DELETE FROM CUSTOMER WHERE NAME = ?;";
             prep = c.prepareStatement(query);
             prep.setString(1, name);
@@ -681,8 +708,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from item where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
-            if(!rs.next())
+            if(!rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "DELETE FROM ITEM WHERE ID = ?;";
             prep = c.prepareStatement(query);
             prep.setInt(1, id);
@@ -707,8 +736,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from item where name=?;");
             prep.setString(1, name);
             ResultSet rs= prep.executeQuery();
-            if(!rs.next())
+            if(!rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "DELETE FROM ITEM WHERE NAME = ?;";
             prep = c.prepareStatement(query);
             prep.setString(1, name);
@@ -733,8 +764,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from order where id=?;");
             prep.setInt(1, id);
             ResultSet rs= prep.executeQuery();
-            if(!rs.next())
+            if(!rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "DELETE FROM ORDER WHERE ID = ?;";
             prep = c.prepareStatement(query);
             prep.setInt(1, id);
@@ -758,8 +791,10 @@ public class database_operations {
             PreparedStatement prep = c.prepareStatement("select * from order_item where order_id=?;");
             prep.setInt(1, order_id);
             ResultSet rs= prep.executeQuery();
-            if(!rs.next())
+            if(!rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "DELETE FROM ORDER_ITEM WHERE order_id = ? and item_id = ?;";
             prep = c.prepareStatement(query);
             prep.setInt(1, order_id);
@@ -785,8 +820,10 @@ public class database_operations {
             prep.setInt(1, order_id);
             prep.setInt(2, item_id);
             ResultSet rs= prep.executeQuery();
-            if(!rs.next())
+            if(!rs.next()){
+                c.close();
                 return 0;
+            }
             String query = "DELETE FROM ORDER_ITEM WHERE order_id = ? and item_id = ?;";
             prep = c.prepareStatement(query);
             prep.setInt(1, order_id);
