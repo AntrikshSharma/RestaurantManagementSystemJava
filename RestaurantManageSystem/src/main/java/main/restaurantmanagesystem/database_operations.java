@@ -10,7 +10,9 @@ Database Operations
 Insert Functions
 => ** All return 1 if value is inserted, 0 if value already present. **
 => insert_employee(int id, String name, String mobile, String email, String address, String date)
+=> insert_waiter(int id, int salary, int emp_id, String name, String mobile, String email, String address, String date)
 => insert_waiter(int id, int salary, int emp_id)
+=> insert_admin(int id, int emp_id, String name, String mobile, String email, String address, String date)
 => insert_admin(int id, int emp_id)
 => insert_customer(int id, String name, String mobile, String email,String address, String joining_date)
 => insert_item(int id, String name, int price, String type)
@@ -373,6 +375,105 @@ public class database_operations {
         return 0;
     }
 
+    int insert_waiter(int id, int salary, int emp_id, String name, String mobile, String email, String address, String date) {
+        Date d = Date.valueOf(date);
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from employee where id=?;");
+            prep.setInt(1, id);
+            ResultSet rs = prep.executeQuery();
+            if (rs.next()) {
+                c.close();
+                return 0;
+            }
+            String query = "INSERT INTO EMPLOYEE VALUES (?, ?, ?, ?, ?, ?);";
+            prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.setString(2, name);
+            prep.setString(3, mobile);
+            prep.setString(4, email);
+            prep.setString(5, address);
+            prep.setDate(6, d);
+            prep.executeUpdate();
+            prep = c.prepareStatement("select * from waiter where id=?;");
+            prep.setInt(1, id);
+            rs = prep.executeQuery();
+            if (rs.next()) {
+                c.close();
+                return 0;
+            }
+            query = "INSERT INTO WAITER VALUES (?, ?, ?);";
+            prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.setInt(2, salary);
+            prep.setInt(3, emp_id);
+            prep.executeUpdate();
+            System.out.println("Value Inserted.");
+//            c.close();
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return 0;
+    }
+
+    int insert_admin(int id, int emp_id, String name, String mobile, String email, String address, String date) {
+        Date d = Date.valueOf(date);
+        Connection c = newConnection(true);
+        try {
+            PreparedStatement prep = c.prepareStatement("select * from employee where id=?;");
+            prep.setInt(1, id);
+            ResultSet rs = prep.executeQuery();
+            if (rs.next()) {
+                c.close();
+                return 0;
+            }
+            String query = "INSERT INTO EMPLOYEE VALUES (?, ?, ?, ?, ?, ?);";
+            prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.setString(2, name);
+            prep.setString(3, mobile);
+            prep.setString(4, email);
+            prep.setString(5, address);
+            prep.setDate(6, d);
+            prep.executeUpdate();
+            prep = c.prepareStatement("select * from admin where id=?;");
+            prep.setInt(1, id);
+            rs = prep.executeQuery();
+            if (rs.next()) {
+                c.close();
+                return 0;
+            }
+            query = "INSERT INTO ADMIN VALUES (?, ?);";
+            prep = c.prepareStatement(query);
+            prep.setInt(1, id);
+            prep.setInt(2, emp_id);
+            prep.executeUpdate();
+            System.out.println("Value Inserted.");
+//            c.close();
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return 0;
+    }
+
     int insert_admin(int id, int emp_id) {
 
         Connection c = newConnection(true);
@@ -516,6 +617,7 @@ public class database_operations {
 
         Connection c = newConnection(true);
         try {
+
             PreparedStatement prep = c.prepareStatement("select * from order where order_id=?;");
             prep.setInt(1, order_id);
             ResultSet rs = prep.executeQuery();
