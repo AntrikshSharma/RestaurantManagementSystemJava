@@ -573,6 +573,7 @@ public class Admin extends javax.swing.JFrame {
         // TODO add your handling code here:
         LoginMain LM = new LoginMain();
         LM.setVisible(true);
+//        System.out.println("login button clicked");
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -12,21 +12,21 @@ import java.util.logging.Logger;
 public class RestaurantManageSystem {
 
     public static void main(String[] args) {
-        SplashScreen LS = new SplashScreen();
-        LS.setVisible(true);
+//        SplashScreen LS = new SplashScreen();
+//        LS.setVisible(true);
         
-        // ADD THE RESOURCE LOADING CODE HERE
+         //ADD THE RESOURCE LOADING CODE HERE
         
-        for ( int i=0; i<5; ++i)
-        {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                System.out.println(ex.toString());
-            }
-            
-        }
-        LS.dispose();
+//        for ( int i=0; i<5; ++i)
+//        {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException ex) {
+//                System.out.println(ex.toString());
+//            }
+//
+//        }
+//        LS.dispose();
         LoginMain LP = new LoginMain();
         LP.setVisible(true);
         

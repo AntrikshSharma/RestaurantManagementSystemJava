@@ -41,13 +41,11 @@ import java.sql.*;
 public class database_operations {
     String dbname;
     String[] table_names;
-    database_operations()
-    {
+    database_operations() {
         dbname = "";
         table_names = new String[]{"employee", "waiter", "admin", "customer", "\"order\"", "order_item"};
     }
-    Connection newConnection(boolean with_dbname)
-    {
+    Connection newConnection(boolean with_dbname) {
         Connection c = null;
         try {
             Class.forName("org.postgresql.Driver");
@@ -60,50 +58,63 @@ public class database_operations {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return c;
     }
-    boolean databaseExists()
-    {
+    boolean databaseExists() {
         boolean result = false;
         Connection c = newConnection(false);
         try {
             Statement s = c.createStatement();
             String query = "SELECT datname FROM pg_catalog.pg_database WHERE lower(datname) = lower('"+ dbname + "');";
             ResultSet r = s.executeQuery(query);
-            if(r.next())
-            {
+            if(r.next()) {
                 result = true;
             }
-            c.close();
-        } catch(Exception e)
-        {
+//            c.close();
+        } catch(Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return result;
     }
-    void create_database(String name)
-    {
+    void create_database(String name) {
         Connection c = newConnection(false);
         dbname = name;
         try {
             Statement s = c.createStatement();
-            if(databaseExists())
-            {
+            if(databaseExists()) {
                 System.out.println("Database already exists.");
             }
             else {
                 s.executeUpdate("CREATE DATABASE " + dbname + ";");
                 System.out.println("Database Created.");
             }
-            c.close();
+//            c.close();
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
     void delete_database()
@@ -111,8 +122,7 @@ public class database_operations {
         Connection c = newConnection(false);
         try {
             Statement s = c.createStatement();
-            if(databaseExists())
-            {
+            if(databaseExists()) {
                 s.executeUpdate("DROP DATABASE " + dbname + ";");
                 System.out.println("Database deleted.");
                 dbname = "";
@@ -120,12 +130,18 @@ public class database_operations {
             else {
                 System.out.println("Database does not exist.");
             }
-            c.close();
+//            c.close();
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
     void create_tables()
@@ -134,8 +150,7 @@ public class database_operations {
         try {
             Statement s = c.createStatement();
             String[] q = new String[12];
-            if(!databaseExists())
-            {
+            if(!databaseExists()) {
                 System.out.println("Database does not exist.");
                 return;
             }
@@ -209,12 +224,18 @@ public class database_operations {
             }
             s.executeBatch();
             System.out.println("Tables Created.");
-            c.close();
+//            c.close();
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
     void delete_tables(){
@@ -222,8 +243,7 @@ public class database_operations {
         try {
             Statement s = c.createStatement();
             String[] q = new String[9];
-            if(!databaseExists())
-            {
+            if(!databaseExists()) {
                 System.out.println("Database does not exist.");
                 return;
             }
@@ -250,12 +270,18 @@ public class database_operations {
             }
             s.executeBatch();
             System.out.println("Tables Deleted.");
-            c.close();
+//            c.close();
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -264,8 +290,7 @@ public class database_operations {
         try {
             Statement s = c.createStatement();
             String[] q = new String[2];
-            if(!databaseExists())
-            {
+            if(!databaseExists()) {
                 System.out.println("Database does not exist.");
                 return;
             }
@@ -277,16 +302,20 @@ public class database_operations {
             s.executeBatch();
             System.out.println("Clustering done.");
             c.close();
-        } catch(Exception e)
-        {
+        } catch(Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }  finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    int insert_employee(int id, String name, String mobile, String email, String address, String date)
-    {
+    int insert_employee(int id, String name, String mobile, String email, String address, String date) {
         Date d = Date.valueOf(date);
         Connection c = newConnection(true);
         try {
@@ -305,19 +334,24 @@ public class database_operations {
             prep.setDate(6, d);
             prep.executeUpdate();
             System.out.println("Value Inserted.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        } finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
 
-    int insert_waiter(int id, int salary, int emp_id)
-    {
+    int insert_waiter(int id, int salary, int emp_id) {
 
         Connection c = newConnection(true);
         try {
@@ -333,13 +367,19 @@ public class database_operations {
             prep.setInt(3, emp_id);
             prep.executeUpdate();
             System.out.println("Value Inserted.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
@@ -360,13 +400,18 @@ public class database_operations {
             prep.setInt(2, emp_id);
             prep.executeUpdate();
             System.out.println("Value Inserted.");
-            c.close();
+//            c.close();
             return 1;
-        } catch(Exception e)
-        {
+        } catch(Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
@@ -391,13 +436,19 @@ public class database_operations {
             prep.setDate(6, d);
             prep.executeUpdate();
             System.out.println("Value Inserted.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
@@ -419,13 +470,19 @@ public class database_operations {
             prep.setString(3, type);
             prep.executeUpdate();
             System.out.println("Value Inserted.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
@@ -448,13 +505,19 @@ public class database_operations {
             prep.setInt(5, customer_id);
             prep.executeUpdate();
             System.out.println("Value Inserted.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
@@ -476,13 +539,19 @@ public class database_operations {
             prep.setInt(3, quantity);
             prep.executeUpdate();
             System.out.println("Value Inserted.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
@@ -502,13 +571,19 @@ public class database_operations {
             prep.setInt(1, id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
@@ -528,13 +603,19 @@ public class database_operations {
             prep.setString(1, name);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
@@ -554,13 +635,19 @@ public class database_operations {
             prep.setInt(1, id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
@@ -580,13 +667,19 @@ public class database_operations {
             prep.setInt(1, id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
@@ -606,13 +699,19 @@ public class database_operations {
             prep.setInt(1, id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
@@ -632,13 +731,19 @@ public class database_operations {
             prep.setString(1, name);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
@@ -658,13 +763,19 @@ public class database_operations {
             prep.setInt(1, id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
@@ -684,13 +795,19 @@ public class database_operations {
             prep.setString(1, name);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
@@ -710,13 +827,19 @@ public class database_operations {
             prep.setInt(1, id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
@@ -736,13 +859,19 @@ public class database_operations {
             prep.setInt(1, order_id);
             prep.executeUpdate();
             System.out.println("Value REMOVED.");
-            c.close();
+//            c.close();
             return 1;
         } catch(Exception e)
         {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
             System.exit(0);
+        }finally {
+            try {
+                c.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return 0;
     }
