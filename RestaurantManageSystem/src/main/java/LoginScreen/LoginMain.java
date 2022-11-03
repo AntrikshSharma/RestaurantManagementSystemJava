@@ -185,17 +185,11 @@ public class LoginMain extends javax.swing.JFrame {
             co.setVisible(true);
             this.dispose();
         }
-        else if (userType.equals("ADMIN")) {
+        else {
             Admin admin = new Admin();
             admin.setVisible(true);
             this.dispose();
         }
-        else {
-            Kitchen kitchen = new Kitchen();
-            kitchen.setVisible(true);
-            this.dispose();
-        }
-
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
