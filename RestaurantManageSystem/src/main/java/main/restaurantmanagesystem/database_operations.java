@@ -746,23 +746,4 @@ public class database_operations {
         }
         return 0;
     }
-
-
-
-    /*public static void main(String[] args) {
-        int x;
-        database_operations db = new database_operations();
-        db.create_database("db");
-        db.create_tables();
-        db.cluster();
-        x = db.insert_employee(1, "Anupam", "9842568104", "anupam@gmail.com",
-                "Example Address, Test Road, Test City - 411038", "2022-09-16");
-        System.out.println(x);
-        x = db.insert_employee(1, "Anupam", "9842568104", "anupam@gmail.com",
-                "Example Address, Test Road, Test City - 411038", "2022-09-16");
-        System.out.println(x);
-        db.remove_employee(1);
-        db.delete_tables();
-        db.delete_database();
-    }*/
 }
