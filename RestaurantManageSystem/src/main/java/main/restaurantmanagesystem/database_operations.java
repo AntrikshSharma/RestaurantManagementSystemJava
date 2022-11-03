@@ -74,15 +74,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class database_operations {
-    String dbname;
-    String[] table_names;
+    public String dbname;
+    public String[] table_names;
 
-    database_operations() {
+    public database_operations() {
         dbname = "";
         table_names = new String[]{"employee", "waiter", "admin", "customer", "\"order\"", "order_item"};
     }
 
-    Connection newConnection(boolean with_dbname) {
+    public Connection newConnection(boolean with_dbname) {
         Connection c = null;
         try {
             Class.forName("org.postgresql.Driver");
@@ -103,7 +103,7 @@ public class database_operations {
         return c;
     }
 
-    boolean databaseExists() {
+    public boolean databaseExists() {
         boolean result = false;
         Connection c = newConnection(false);
         try {
@@ -128,7 +128,7 @@ public class database_operations {
         return result;
     }
 
-    void create_database(String name) {
+    public void create_database(String name) {
         Connection c = newConnection(false);
         dbname = name;
         try {
@@ -153,7 +153,7 @@ public class database_operations {
         }
     }
 
-    void delete_database() {
+    public void delete_database() {
         Connection c = newConnection(false);
         try {
             Statement s = c.createStatement();
@@ -178,7 +178,7 @@ public class database_operations {
         }
     }
 
-    void create_tables() {
+    public void create_tables() {
         Connection c = newConnection(true);
         try {
             Statement s = c.createStatement();
@@ -227,7 +227,7 @@ public class database_operations {
         }
     }
 
-    void delete_tables() {
+    public void delete_tables() {
         Connection c = newConnection(true);
         try {
             Statement s = c.createStatement();
@@ -273,7 +273,7 @@ public class database_operations {
         }
     }
 
-    void cluster() {
+    public void cluster() {
         Connection c = newConnection(true);
         try {
             Statement s = c.createStatement();
@@ -303,7 +303,7 @@ public class database_operations {
         }
     }
 
-    int insert_employee(int id, String name, String mobile, String email, String address, String date) {
+    public int insert_employee(int id, String name, String mobile, String email, String address, String date) {
         Date d = Date.valueOf(date);
         Connection c = newConnection(true);
         try {
@@ -341,7 +341,7 @@ public class database_operations {
         return 0;
     }
 
-    int insert_waiter(int id, int salary, int emp_id) {
+    public int insert_waiter(int id, int salary, int emp_id) {
 
         Connection c = newConnection(true);
         try {
@@ -375,7 +375,7 @@ public class database_operations {
         return 0;
     }
 
-    int insert_waiter(int id, int salary, int emp_id, String name, String mobile, String email, String address, String date) {
+    public int insert_waiter(int id, int salary, int emp_id, String name, String mobile, String email, String address, String date) {
         Date d = Date.valueOf(date);
         Connection c = newConnection(true);
         try {
@@ -425,7 +425,7 @@ public class database_operations {
         return 0;
     }
 
-    int insert_admin(int id, int emp_id, String name, String mobile, String email, String address, String date) {
+    public int insert_admin(int id, int emp_id, String name, String mobile, String email, String address, String date) {
         Date d = Date.valueOf(date);
         Connection c = newConnection(true);
         try {
@@ -474,7 +474,7 @@ public class database_operations {
         return 0;
     }
 
-    int insert_admin(int id, int emp_id) {
+    public int insert_admin(int id, int emp_id) {
 
         Connection c = newConnection(true);
         try {
@@ -507,7 +507,7 @@ public class database_operations {
         return 0;
     }
 
-    int insert_customer(int id, String name, String mobile, String email, String address, String joining_date) {
+    public int insert_customer(int id, String name, String mobile, String email, String address, String joining_date) {
         Date d = Date.valueOf(joining_date);
         Connection c = newConnection(true);
         try {
@@ -544,7 +544,7 @@ public class database_operations {
         return 0;
     }
 
-    int insert_item(int id, String name, int price, String type) {
+    public int insert_item(int id, String name, int price, String type) {
         Connection c = newConnection(true);
         try {
             PreparedStatement prep = c.prepareStatement("select * from item where id=?;");
@@ -578,7 +578,7 @@ public class database_operations {
         return 0;
     }
 
-    int insert_order(int id, int total, String status, int writer_id, int customer_id) {
+    public int insert_order(int id, int total, String status, int writer_id, int customer_id) {
         Connection c = newConnection(true);
         try {
             PreparedStatement prep = c.prepareStatement("select * from order where id=?;");
@@ -613,7 +613,7 @@ public class database_operations {
         return 0;
     }
 
-    int insert_orderitem(int order_id, int item_id, int quantity) {
+    public int insert_orderitem(int order_id, int item_id, int quantity) {
 
         Connection c = newConnection(true);
         try {
@@ -648,7 +648,7 @@ public class database_operations {
         return 0;
     }
 
-    int remove_employee(int id) {
+    public int remove_employee(int id) {
 
         Connection c = newConnection(true);
         try {
@@ -680,7 +680,7 @@ public class database_operations {
         return 0;
     }
 
-    int remove_employee(String name) {
+    public int remove_employee(String name) {
 
         Connection c = newConnection(true);
         try {
@@ -712,7 +712,7 @@ public class database_operations {
         return 0;
     }
 
-    int remove_waiter(int id) {
+    public int remove_waiter(int id) {
 
         Connection c = newConnection(true);
         try {
@@ -744,7 +744,7 @@ public class database_operations {
         return 0;
     }
 
-    int remove_admin(int id) {
+    public int remove_admin(int id) {
 
         Connection c = newConnection(true);
         try {
@@ -776,7 +776,7 @@ public class database_operations {
         return 0;
     }
 
-    int remove_customer(int id) {
+    public int remove_customer(int id) {
 
         Connection c = newConnection(true);
         try {
@@ -808,7 +808,7 @@ public class database_operations {
         return 0;
     }
 
-    int remove_customer(String name) {
+    public int remove_customer(String name) {
 
         Connection c = newConnection(true);
         try {
@@ -840,7 +840,7 @@ public class database_operations {
         return 0;
     }
 
-    int remove_item(int id) {
+    public int remove_item(int id) {
 
         Connection c = newConnection(true);
         try {
@@ -872,7 +872,7 @@ public class database_operations {
         return 0;
     }
 
-    int remove_item(String name) {
+    public int remove_item(String name) {
 
         Connection c = newConnection(true);
         try {
@@ -904,7 +904,7 @@ public class database_operations {
         return 0;
     }
 
-    int remove_order(int id) {
+    public int remove_order(int id) {
         Connection c = newConnection(true);
         try {
             PreparedStatement prep = c.prepareStatement("select * from order where id=?;");
@@ -935,7 +935,7 @@ public class database_operations {
         return 0;
     }
 
-    int remove_orderitem(int order_id) {
+    public int remove_orderitem(int order_id) {
 
         Connection c = newConnection(true);
         try {
@@ -967,7 +967,7 @@ public class database_operations {
         return 0;
     }
 
-    int remove_orderitem(int order_id, int item_id) {
+    public int remove_orderitem(int order_id, int item_id) {
 
         Connection c = newConnection(true);
         try {
@@ -1002,10 +1002,10 @@ public class database_operations {
     }
 
     public class employee {
-        int id;
-        String name, mobile, email, address, date;
+        public int id;
+        public String name, mobile, email, address, date;
 
-        employee() {
+        public employee() {
             id = -1;
             name = "";
             mobile = "";
@@ -1015,7 +1015,7 @@ public class database_operations {
         }
     }
 
-    List<employee> getEmployee() {
+    public List<employee> getEmployee() {
 //        employee[] arr = new employee[]{new employee()};
         List<employee> arr = new ArrayList<>();
 
@@ -1056,7 +1056,7 @@ public class database_operations {
         return arr;
     }
 
-    employee getEmployee(int id) {
+    public employee getEmployee(int id) {
         employee a = new employee();
         int i = 0;
         Connection c = newConnection(true);
@@ -1089,16 +1089,16 @@ public class database_operations {
     }
 
     public class waiter {
-        int id, salary, emp_id;
+        public int id, salary, emp_id;
 
-        waiter() {
+        public waiter() {
             id = -1;
             salary = -1;
             emp_id = -1;
         }
     }
 
-    List<waiter> getWaiter() {
+    public List<waiter> getWaiter() {
 //        waiter[] arr = new waiter[]{new waiter()};
         List<waiter> arr = new ArrayList<>();
         Connection c = newConnection(true);
@@ -1133,7 +1133,7 @@ public class database_operations {
         return arr;
     }
 
-    waiter getWaiter(int id) {
+    public waiter getWaiter(int id) {
         waiter a = new waiter();
         int i = 0;
         Connection c = newConnection(true);
@@ -1164,15 +1164,15 @@ public class database_operations {
 
 
     public class admin {
-        int id, emp_id;
+        public int id, emp_id;
 
-        admin() {
+        public admin() {
             id = -1;
             emp_id = -1;
         }
     }
 
-    List<admin> getAdmin() {
+    public List<admin> getAdmin() {
 //        admin[] arr = new admin[]{new admin()};
         List<admin> arr = new ArrayList<>();
         Connection c = newConnection(true);
@@ -1206,7 +1206,7 @@ public class database_operations {
         return arr;
     }
 
-    admin getAdmin(int id) {
+    public admin getAdmin(int id) {
         admin a = new admin();
         int i = 0;
         Connection c = newConnection(true);
@@ -1236,10 +1236,10 @@ public class database_operations {
     }
 
     public class customer {
-        int id;
-        String name, mobile, email, address, joining_date;
+        public int id;
+        public String name, mobile, email, address, joining_date;
 
-        customer() {
+        public customer() {
             id = -1;
             name = "";
             mobile = "";
@@ -1249,7 +1249,7 @@ public class database_operations {
         }
     }
 
-    List<customer> getCustomer() {
+    public List<customer> getCustomer() {
 //        customer[] arr = new customer[]{new customer()};
         List<customer> arr = new ArrayList<>();
         Connection c = newConnection(true);
@@ -1287,7 +1287,7 @@ public class database_operations {
         return arr;
     }
 
-    customer getCustomer(int id) {
+    public customer getCustomer(int id) {
         customer a = new customer();
         int i = 0;
         Connection c = newConnection(true);
@@ -1320,10 +1320,10 @@ public class database_operations {
     }
 
     public class item {
-        int id, price;
-        String name, type;
+        public int id, price;
+        public String name, type;
 
-        item() {
+        public item() {
             id = -1;
             name = "";
             price = -1;
@@ -1331,7 +1331,7 @@ public class database_operations {
         }
     }
 
-    List<item> getItem() {
+    public List<item> getItem() {
 //        item[] arr = new item[]{new item()};
         List<item> arr = new ArrayList<>();
         Connection c = newConnection(true);
@@ -1367,7 +1367,7 @@ public class database_operations {
         return arr;
     }
 
-    item getItem(int id) {
+    public item getItem(int id) {
         item a = new item();
         int i = 0;
         Connection c = newConnection(true);
@@ -1399,10 +1399,10 @@ public class database_operations {
 
 
     public class order {
-        int id, total, writer_id, customer_id;
-        String status;
+        public int id, total, writer_id, customer_id;
+        public String status;
 
-        order() {
+        public order() {
             id = -1;
             total = -1;
             writer_id = -1;
@@ -1411,7 +1411,7 @@ public class database_operations {
         }
     }
 
-    List<order> getOrder() {
+    public List<order> getOrder() {
 //        order[] arr = new order[]{new order()};
         List<order> arr = new ArrayList<>();
         Connection c = newConnection(true);
@@ -1448,7 +1448,7 @@ public class database_operations {
         return arr;
     }
 
-    order getOrder(int id) {
+    public order getOrder(int id) {
         order a = new order();
         int i = 0;
         Connection c = newConnection(true);
@@ -1480,16 +1480,16 @@ public class database_operations {
     }
 
     public class orderitem {
-        int order_id, item_id, quantity;
+        public int order_id, item_id, quantity;
 
-        orderitem() {
+        public orderitem() {
             order_id = -1;
             item_id = -1;
             quantity = -1;
         }
     }
 
-    List<orderitem> getOrderItem() {
+    public List<orderitem> getOrderItem() {
 //        orderitem[] arr = new orderitem[]{new orderitem()};
         List<orderitem> arr = new ArrayList<>();
         Connection c = newConnection(true);
@@ -1524,7 +1524,7 @@ public class database_operations {
         return arr;
     }
 
-    List<orderitem> getOrderItem(int order_id) {
+    public List<orderitem> getOrderItem(int order_id) {
 //        orderitem[] arr = new orderitem[]{new orderitem()};
         List<orderitem> arr = new ArrayList<>();
         Connection c = newConnection(true);
@@ -1560,7 +1560,7 @@ public class database_operations {
         return arr;
     }
 
-    orderitem getOrderItem(int order_id, int item_id) {
+    public orderitem getOrderItem(int order_id, int item_id) {
         orderitem a = new orderitem();
         int i = 0;
         Connection c = newConnection(true);
