@@ -97,7 +97,7 @@ public class LoginMain extends javax.swing.JFrame {
 
         jLabel6.setBackground(new java.awt.Color(74, 188, 150));
         jLabel6.setForeground(new java.awt.Color(51, 255, 153));
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/LoginScreen/LOGO.png"))); // NOI18N
+        //jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home/achyut/Documents/college/Java/RestaurantManagementSystemJava/RestaurantManageSystem/src/main/java/LoginScreen/LOGO.png"))); // NOI18N
         jLabel6.setOpaque(true);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -178,7 +178,7 @@ public class LoginMain extends javax.swing.JFrame {
         String userType = loginType.getSelectedItem().toString();
         String userName = username.getText().toString();
         String userPass = password.getText().toString();
-        
+
         if ( userType.equals("WAITER") ) {
             
             CreateOrder co = new CreateOrder();
