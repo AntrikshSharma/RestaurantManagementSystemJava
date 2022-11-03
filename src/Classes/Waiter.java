@@ -10,49 +10,18 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Admin extends Person{
-    public Admin(String username, String password){
+public class Waiter extends Person{
+    
+    public Waiter(String username, String password){
         super(username, password);
     }
-    public Admin () {
+    
+    
+    public Waiter () {
         super(" ", " ");
     }
-    public List getAll() {
-        List<Admin> obj = new ArrayList<>();
-        Connection conn = null;
-        String url = "jdbc:mysql://localhost:3306/rest";
-        String userName = "root";
-        String pass = "admin@123";
-        try {
-            conn = DriverManager.getConnection(url, userName, pass);
-            String query = 
-                    "SELECT * FROM rest.admins where username=\"" + getUsername() + "\"";
-            
-            Statement stm = conn.createStatement();
-            ResultSet result = stm.executeQuery(query);
-            
-            while( result.next() ){
-                Admin admin;
-                String username = result.getString(1);
-                String password = result.getString(2);
-                
-                admin = new Admin(username, password);
-                obj.add(admin);
-            }
-        }catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            try {
-                conn.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return obj;
-    }
     
-    public int remove(String username) throws SQLException {
-        
+    public int remove(String username) { 
         Connection conn = null;
         String url = "jdbc:mysql://localhost:3306/rest";
         String userName = "root";
@@ -60,11 +29,12 @@ public class Admin extends Person{
         try{
             conn = DriverManager.getConnection(url, userName, password);
             
-            String query = 
-                    "delete from rest.admins where username = \"" + username + "\";";
+            String query = "delete from rest.waiter where username = \"" + username + "\";";
             
             Statement stm = conn.createStatement();
+
             stm.execute(query);
+            
             return 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,6 +47,40 @@ public class Admin extends Person{
             }
         }
     }
+    public List getAll() {
+        List<Waiter> obj = new ArrayList<>();
+        Connection conn = null;
+        String url = "jdbc:mysql://localhost:3306/rest";
+        String userName = "root";
+        String pass = "admin@123";
+        try {
+            conn = DriverManager.getConnection(url, userName, pass);
+            String query = 
+                    "SELECT * FROM rest.waiter where username=\"" + getUsername() + "\"";
+            
+            Statement stm = conn.createStatement();
+            ResultSet result = stm.executeQuery(query);
+            
+            while( result.next() ){
+                Waiter waiter;
+                String username = result.getString(1);
+                String password = result.getString(2);
+                
+                waiter = new Waiter(username, password);
+                obj.add(waiter);
+            }
+        }catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Waiter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return obj;
+    }
+    
     public boolean isValid() throws SQLException {
         String username = getUsername();
         String password = getPassword();
@@ -89,7 +93,7 @@ public class Admin extends Person{
         
         try {
             conn = DriverManager.getConnection(url, usr, dbPass);
-            String query = "select * from rest.admins where username=\"" + getUsername() + "\" and password=\"" + getPassword() + "\";";
+            String query = "select * from rest.waiter where username=\"" + getUsername() + "\" and password=\"" + getPassword() + "\";";
             Statement stm = conn.createStatement();
             ResultSet result = stm.executeQuery(query);
             
@@ -118,7 +122,7 @@ public class Admin extends Person{
             conn = DriverManager.getConnection(url, userName, password);
             
             String query = 
-                    "insert into rest.admins(username, password) values(\"" + getUsername() + "\", \""  + getPassword() + "\");";
+                    "insert into rest.waiter(username, password) values(\"" + getUsername() + "\", \""  + getPassword() + "\");";
             
             Statement stm = conn.createStatement();
 

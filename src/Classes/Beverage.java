@@ -60,7 +60,32 @@ public class Beverage implements Item{
             }
         }
     }
-    
+   public int remove(String name) { 
+        Connection conn = null;
+        String url = "jdbc:mysql://localhost:3306/rest";
+        String userName = "root";
+        String password = "admin@123";
+        try{
+            conn = DriverManager.getConnection(url, userName, password);
+            
+            String query = "delete from rest.food_items where name = \"" + name + "\";";
+            
+            Statement stm = conn.createStatement();
+
+            stm.execute(query);
+            
+            return 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Food.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    } 
 public List getAll() {
         List<Beverage> obj = new ArrayList<>();
         Connection conn = null;
@@ -78,7 +103,7 @@ public List getAll() {
             ResultSet result = stm.executeQuery(query);
             
             while ( result.next() ) {
-                Beverage bev = new Beverage(result.getString(4), Float.parseFloat(result.getString(3)));
+                Beverage bev = new Beverage(result.getString(3), Float.parseFloat(result.getString(2)));
                 obj.add(bev);
             }
             
@@ -95,15 +120,6 @@ public List getAll() {
             return obj;
         }
     }
-    
-    public static void main(String args[]) {
-        Beverage obj = new Beverage("Beverage", 500);
-        List<Beverage> list = obj.getAll();
-        int len = list.size();
-        for(int i = 0; i < len; i++) {
-            System.out.println("Name is " + list.get(i).getName());
-            System.out.println("Price is " + list.get(i).getPrice());
-        }
-    }
+   
 }
 

@@ -21,6 +21,11 @@ public class Desert implements Item{
         price = p;
     }
     
+    public Desert ()
+    {
+        name = " ";
+        price = 0;
+    }
     public String getName()
     {
         return name;
@@ -59,6 +64,33 @@ public class Desert implements Item{
         }
     }
     
+    public int remove(String name) { 
+        Connection conn = null;
+        String url = "jdbc:mysql://localhost:3306/rest";
+        String userName = "root";
+        String password = "admin@123";
+        try{
+            conn = DriverManager.getConnection(url, userName, password);
+            
+            String query = "delete from rest.food_items where name = \"" + name + "\";";
+            
+            Statement stm = conn.createStatement();
+
+            stm.execute(query);
+            
+            return 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Food.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     public List getAll() {
         List<Desert> obj = new ArrayList<>();
         Connection conn = null;
@@ -76,7 +108,7 @@ public class Desert implements Item{
             ResultSet result = stm.executeQuery(query);
             
             while ( result.next() ) {
-                Desert bev = new Desert(result.getString(4), Float.parseFloat(result.getString(3)));
+                Desert bev = new Desert(result.getString(3), Float.parseFloat(result.getString(2)));
                 obj.add(bev);
             }
             
