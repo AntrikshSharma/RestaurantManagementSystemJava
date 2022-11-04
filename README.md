@@ -1,4 +1,4 @@
-# Fast Food Counter Billing System
+# Restaurant Management System
 
 An extensive UI enabled Billing System with an Admin support panel 
 built using:
